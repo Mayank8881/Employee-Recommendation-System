@@ -23,18 +23,18 @@ export const calculateScore = (employeeSkills, projectSkills, employee) => {
             const proficiencyDiff =
                 empSkill.proficiency_level - projectSkill.required_proficiency;
 
-            if (proficiencyDiff >= 0) {
+            if (proficiencyDiff > 0) {
 
-                proficiencyScore += 35;
-                explanation.push("Equal or Higher proficiency than required : (+35)");
+                proficiencyScore += 25;
+                explanation.push("Higher proficiency than required so Can be assigned on differnt project with high proficiency: (+25)");
 
             }
-            //   else if (proficiencyDiff === 0) {
+              else if (proficiencyDiff === 0) {
 
-            //     score += 15;
-            //     explanation.push("Required proficiency matched");
+                score += 35;
+                explanation.push("Required proficiency matched (+35)");
 
-            //   } 
+              } 
             else {
 
                 proficiencyScore += 15;
