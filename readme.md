@@ -75,38 +75,48 @@ Swagger UI provides interactive documentation for all APIs.
 
 * Swagger UI
 * swagger-jsdoc
-
-## Environment Management
-
-* dotenv
-
 ---
 
 # Project Architecture
-
-The project follows a **modular layered architecture**:
 
 ```
 backend
 │
 ├── config
-│   └── supabase.js
+│   ├── supabase.js
+│   └── swagger.js
 │
 ├── controllers
-│   ├── employeeController.js
-│   ├── projectController.js
-│   ├── employeeSkillController.js
-│   ├── projectSkillController.js
-│   ├── employeeSearchController.js
-│   └── recommendationController.js
+│   |
+│   ├── employee
+│   │   ├── employeeController.js
+│   │   └── employeeSkillController.js
+│   |
+│   ├── project
+│   │   ├── projectController.js
+│   │   └── projectSkillController.js
+│   |
+│   ├── search
+│   │   └── employeeSearchController.js
+│   |
+│   └── recommendation
+│       └── recommendationController.js
 │
 ├── models
-│   ├── employeeModel.js
-│   ├── projectModel.js
-│   ├── employeeSkillModel.js
-│   ├── projectSkillModel.js
-│   ├── employeeSearchModel.js
-│   └── recommendationModel.js
+│   |
+│   ├── employee
+│   │   ├── employeeModel.js
+│   │   └── employeeSkillModel.js
+│   |
+│   ├── project
+│   │   ├── projectModel.js
+│   │   └── projectSkillModel.js
+│   |
+│   ├── search
+│   │   └── employeeSearchModel.js
+│   |
+│   └── recommendation
+│       └── recommendationModel.js
 │
 ├── routes
 │   ├── employeeRoutes.js
@@ -119,10 +129,9 @@ backend
 ├── utils
 │   └── recommendationEngine.js
 │
-├── swagger
-│   └── swagger.js
-│
 └── server.js
+└── package.json
+
 ```
 
 ---
@@ -392,5 +401,6 @@ Possible enhancements:
 # Author
 
 Mayank
+---
 Backend system developed for the **Employee Recommendation Engine assignment**.
 
