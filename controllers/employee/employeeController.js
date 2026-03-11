@@ -64,9 +64,9 @@ export const fetchEmployeeById = async (req, res) => {
 
 export const updateEmployee = async (req, res) => {
     try {
-        const { employeeData, id } = (req.body, req.params);
+        const { id } = req.params;
 
-        const employee = await putEmployee(employeeData, id)
+        const employee = await putEmployee(req.body, id)
 
         res.json({
             message: "Employee updated successfully",

@@ -55,13 +55,14 @@ export const deleteEmployee = async (id) => {
 }
 
 //update Employee
-export const putEmployee = async (employeeData, id) => {
+export const putEmployee = async (id, employeeData) => {
     const { data, error } = await supabase
         .from("employees")
         .update(employeeData)
-        .eq(id)
+        .eq("id", id)
+        .select();
     if (error) {
-        throw new Error(error, message);
+        throw new Error(error.message);
     }
     return data;
 }
