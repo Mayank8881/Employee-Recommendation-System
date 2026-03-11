@@ -1,5 +1,19 @@
 import supabase from "../../config/supabase.js";
 
+export const checkProjectExists = async (projectId) => {
+
+    const { data, error } = await supabase
+        .from("projects")
+        .select("id")
+        .eq("id", projectId)
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data.length > 0;;
+};
+
 export const getProjectSkills = async (projectId) => {
 
     const { data, error } = await supabase

@@ -1,4 +1,4 @@
-import { getEmployeesWithSkills, getProjectSkills } from "../../models/recommendation/recommendationModel.js";
+import { checkProjectExists, getEmployeesWithSkills, getProjectSkills } from "../../models/recommendation/recommendationModel.js";
 import { calculateScore } from "../../utils/recommendationEngine.js";
 
 export const recommendEmployees = async (req, res) => {
@@ -6,6 +6,15 @@ export const recommendEmployees = async (req, res) => {
     try {
 
         const { projectId } = req.params;
+
+        //  Validate if project exist !!
+        const project = await checkProjectExists(projectId);
+
+        if (!project) {
+            return res.status(404).json({
+                message: "Project ID does not exist"
+            });
+        }
 
         const projectSkills = await getProjectSkills(projectId);
         const employees = await getEmployeesWithSkills();
