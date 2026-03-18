@@ -29,7 +29,7 @@ app.use("/api/recommendations", recommendationRoutes);
 
 
 //swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //
 app.get("/test-db", async (req, res) => {
     const { data, error } = await supabase.from("employees").select("*");
