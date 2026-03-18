@@ -13,8 +13,8 @@ import cors from "cors";
 
 dotenv.config();
 
-app.use(cors());
 const app = express();
+app.use(cors());
 
 // Middleware
 app.use(express.json());
