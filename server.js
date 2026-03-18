@@ -9,9 +9,11 @@ import employeeSearchRoutes from "./routes/employeeSearchRoutes.js"
 import recommendationRoutes from "./routes/recommendationRoutes.js";
 import supabase from "./config/supabase.js";
 import swaggerSpec from "./config/swagger.js";
+import cors from "cors";
 
 dotenv.config();
 
+app.use(cors());
 const app = express();
 
 // Middleware
