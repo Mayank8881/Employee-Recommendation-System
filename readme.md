@@ -378,7 +378,7 @@ http://localhost:5000
 Swagger UI is available at:
 
 ```
-http://localhost:5000/api-docs
+http://localhost:5000/docs
 ```
 
 This provides interactive API documentation for all endpoints.
