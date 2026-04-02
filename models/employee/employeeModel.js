@@ -44,6 +44,29 @@ export const getEmployeeById = async (id) => {
 
 //delete Employee
 export const deleteEmployee = async (id) => {
+
+    // Fetch employee first
+    const { data: employee, error: fetchError } = await supabase
+        .from("employees")
+        .select("*")
+        .eq("id", id);
+
+    if (fetchError) {
+        throw new Error(fetchError.message);
+    }
+
+    if (!employee || employee.length === 0) {
+        throw new Error("Employee not found");
+    }
+
+    const user = employee[0];
+
+    // Prevent deleting admin
+    if (user.role === "admin") {
+        throw new Error("Admin users cannot be deleted");
+    }
+
+    //Delete Employee
     const { data, error } = await supabase
         .from("employees")
         .delete()

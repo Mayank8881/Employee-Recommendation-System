@@ -1,5 +1,6 @@
 import { createEmployee, fetchEmployeeById, fetchEmployees, removeEmployee, updateEmployee } from "../controllers/employee/employeeController.js";
 import express from "express";
+import { allowRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
@@ -64,7 +65,9 @@ router.post("/", createEmployee);
  *       500:
  *         description: Server error
  */
-router.get("/", fetchEmployees);
+
+// router.get("/", fetchEmployees);
+router.get("/", allowRoles("user","admin"), fetchEmployees)
 
 // --------------------------------- get Employee by ID --------------------------
 /**
@@ -87,7 +90,9 @@ router.get("/", fetchEmployees);
  *       404:
  *         description: Employee not found
  */
-router.get("/:id", fetchEmployeeById);
+
+// router.get("/:id", fetchEmployeeById);
+router.get("/:id", allowRoles("admin"), fetchEmployeeById);
 
 //---------------------------- update Employee ------------------------------------
 /**
@@ -121,7 +126,9 @@ router.get("/:id", fetchEmployeeById);
  *       200:
  *         description: Employee updated successfully
  */
-router.put("/:id", updateEmployee);
+
+// router.put("/:id", updateEmployee);
+router.put("/:id", allowRoles("admin"), updateEmployee);
 
 // ---------------------------  delete Employee ------------------------------
 /**
@@ -141,6 +148,8 @@ router.put("/:id", updateEmployee);
  *       200:
  *         description: Employee deleted successfully
  */
-router.delete("/:id", removeEmployee);
+
+// router.delete("/:id", removeEmployee);
+router.delete("/:id", allowRoles("admin") , removeEmployee);
 
 export default router;

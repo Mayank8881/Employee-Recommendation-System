@@ -66,7 +66,7 @@ export const updateEmployee = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const employee = await putEmployee(req.body, id)
+        const employee = await putEmployee(id,req.body)
 
         res.json({
             message: "Employee updated successfully",
@@ -91,6 +91,14 @@ export const removeEmployee = async (req, res) => {
             data: employee
         });
     } catch (error) {
+
+        if (error.message === "Employee not found") {
+            return res.status(404).json({ message: error.message });
+        }
+
+        if (error.message === "Admin users cannot be deleted") {
+            return res.status(403).json({ message: error.message });
+        }
         res.status(500).json({
             message: "Error deleting employee",
             error: error.message

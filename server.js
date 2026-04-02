@@ -10,6 +10,8 @@ import recommendationRoutes from "./routes/recommendationRoutes.js";
 import supabase from "./config/supabase.js";
 import swaggerSpec from "./config/swagger.js";
 import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
+import { verifyToken } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 
@@ -18,6 +20,13 @@ app.use(cors());
 
 // Middleware
 app.use(express.json());
+
+
+//auth-access 
+app.use("/api/auth", authRoutes);
+
+// 🔐 Protect all routes after this
+app.use("/api", verifyToken);
 
 // Routes
 app.use("/api/employees", employeeRoutes);
