@@ -1,6 +1,7 @@
 import express from "express";
 
 import { createEmployeeSkill, fetchEmployeeSkills, removeEmployeeSkill, updateEmployeeSkill } from "../controllers/employee/employeeSkillController.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
@@ -40,7 +41,9 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.post("/", createEmployeeSkill);
+
+// router.post("/", createEmployeeSkill);
+router.post("/", allowRoles("admin"), createEmployeeSkill);
 
 // Read
 /**
@@ -63,7 +66,9 @@ router.post("/", createEmployeeSkill);
  *       404:
  *         description: Employee not found
  */
-router.get("/:employeeId", fetchEmployeeSkills);
+
+// router.get("/:employeeId", fetchEmployeeSkills);
+router.get("/:employeeId", allowRoles("user","admin"), fetchEmployeeSkills);
 
 // Update
 /**
@@ -97,7 +102,9 @@ router.get("/:employeeId", fetchEmployeeSkills);
  *       200:
  *         description: Employee skill updated
  */
-router.put("/:id", updateEmployeeSkill);
+
+// router.put("/:id", updateEmployeeSkill);
+router.put("/:id", allowRoles("admin"), updateEmployeeSkill);
 
 // Delete
 /**
@@ -118,6 +125,8 @@ router.put("/:id", updateEmployeeSkill);
  *       200:
  *         description: Skill removed from employee
  */
-router.delete("/:id", removeEmployeeSkill);
+
+// router.delete("/:id", removeEmployeeSkill);
+router.delete("/:id", allowRoles("admin"), removeEmployeeSkill);
 
 export default router;

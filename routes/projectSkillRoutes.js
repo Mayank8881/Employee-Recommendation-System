@@ -1,5 +1,6 @@
 import express from "express";
 import { createProjectSkill, fetchProjectSkills, removeProjectSkill, updateProjectSkill } from "../controllers/projects/projectSkillController.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
 
 
 const router = express.Router();
@@ -35,7 +36,9 @@ const router = express.Router();
  *       201:
  *         description: Skill requirement added to project
  */
-router.post("/", createProjectSkill);
+
+// router.post("/", createProjectSkill);
+router.post("/",allowRoles("admin"), createProjectSkill);
 
 // Read
 /**
@@ -56,7 +59,8 @@ router.post("/", createProjectSkill);
  *       200:
  *         description: List of project required skills
  */
-router.get("/:projectId", fetchProjectSkills);
+router.get("/:projectId", allowRoles("user","admin"),fetchProjectSkills);
+// router.get("/:projectId", fetchProjectSkills);
 
 // Update
 /**
@@ -87,7 +91,8 @@ router.get("/:projectId", fetchProjectSkills);
  *       200:
  *         description: Project skill updated
  */
-router.put("/:id", updateProjectSkill);
+router.put("/:id",allowRoles("admin"), updateProjectSkill);
+// router.put("/:id", updateProjectSkill);
 
 // Delete
 /**
@@ -108,6 +113,7 @@ router.put("/:id", updateProjectSkill);
  *       200:
  *         description: Project skill removed
  */
-router.delete("/:id", removeProjectSkill);
+router.delete("/:id",allowRoles("admin"), removeProjectSkill);
+// router.delete("/:id", removeProjectSkill);
 
 export default router;

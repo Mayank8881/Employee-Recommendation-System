@@ -1,5 +1,6 @@
 import e from "express";
 import { createProject, fetchProjects, removeProject, updateProject } from "../controllers/projects/projectController.js";
+import { allowRoles } from "../middleware/roleMiddleware.js";
 const router = e.Router()
 
 //--------------------------------------------Create Project-------------------------------------------
@@ -38,7 +39,8 @@ const router = e.Router()
  *         description: Project created successfully
  */
 
-router.post("/", createProject)
+// router.post("/", createProject)
+router.post("/", allowRoles("admin"), createProject)
 
 // ------------------------------------------Get All Projects---------------------------------------------
 /**
@@ -51,7 +53,9 @@ router.post("/", createProject)
  *       200:
  *         description: List of projects
  */
-router.get("/", fetchProjects)
+
+// router.get("/", fetchProjects)
+router.get("/", allowRoles("admin", "user"), fetchProjects)
 
 // -------------------------------------------Update Project----------------------------------------------
 /**
@@ -81,7 +85,9 @@ router.get("/", fetchProjects)
  *       200:
  *         description: Project updated successfully
  */
-router.put("/:id", updateProject)
+
+// router.put("/:id", updateProject)
+router.put("/:id",allowRoles("admin") ,updateProject)
 
 //--------------------------------------------delete Project----------------------------------------------
 /**
@@ -100,6 +106,8 @@ router.put("/:id", updateProject)
  *       200:
  *         description: Project deleted successfully
  */
-router.delete("/:id", removeProject)
+
+// router.delete("/:id", removeProject)
+router.delete("/:id", allowRoles("admin"),removeProject)
 
 export default router

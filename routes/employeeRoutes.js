@@ -50,7 +50,9 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.post("/", createEmployee);
+
+// router.post("/", createEmployee);
+router.post("/", allowRoles("admin"),createEmployee);
 
 //----------------------------- get employee -------------------------------------
 /**

@@ -5,14 +5,94 @@ import { allowRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
+
+// ------------------- Register User/Admin---------------------------
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new User/Admin
+ *     tags: [AUTH]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - first_name
+ *               - last_name
+ *               - email
+ *               - password
+ *               - role
+ *             properties:
+ *               first_name:
+ *                 type: string
+ *                 example: Mayank
+ *               last_name:
+ *                 type: string
+ *                 example: Mokhere
+ *               email:
+ *                 type: string
+ *                 example: mayank@company.com
+ *               password:
+ *                 type: integer
+ *                 example: 123456789
+ *               role:
+ *                 type: string
+ *                 enum: [user, admin]
+ *                 example: user
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: User already exists
+ *       500:
+ *         description: Server error
+ */
 router.post("/register", register);
+
+
+
+// ------------------- Login User/Admin---------------------------
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: User/Admin Login
+ *     tags: [AUTH]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: mayank@company.com
+ *               password:
+ *                 type: integer
+ *                 example: 123456789
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Server error
+ */
 router.post("/login", login);
 
 // ADMIN ONLY route
 router.patch("/admin/set-password/:userId",
-  verifyToken,
-  allowRoles("admin"),
-  adminSetPassword
+    verifyToken,
+    allowRoles("admin"),
+    adminSetPassword
 );
 
 export default router;
