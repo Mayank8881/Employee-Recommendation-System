@@ -1,6 +1,7 @@
 import { createEmployee, fetchEmployeeById, fetchEmployees, removeEmployee, updateEmployee } from "../controllers/employee/employeeController.js";
 import express from "express";
 import { allowRoles } from "../middleware/roleMiddleware.js";
+import { authorize } from "../middleware/permissionMiddleware.js";
 
 const router = express.Router();
 
@@ -51,8 +52,8 @@ const router = express.Router();
  *         description: Server error
  */
 
-// router.post("/", createEmployee);
-router.post("/", allowRoles("admin"),createEmployee);
+router.post("/", authorize("employee:create"), createEmployee);
+// router.post("/", allowRoles("admin"),createEmployee);
 
 //----------------------------- get employee -------------------------------------
 /**
@@ -68,8 +69,8 @@ router.post("/", allowRoles("admin"),createEmployee);
  *         description: Server error
  */
 
-// router.get("/", fetchEmployees);
-router.get("/", allowRoles("user","admin"), fetchEmployees)
+router.get("/", authorize("employee:read"), fetchEmployees);
+// router.get("/", allowRoles("user","admin"), fetchEmployees)
 
 // --------------------------------- get Employee by ID --------------------------
 /**
@@ -129,8 +130,8 @@ router.get("/:id", allowRoles("admin"), fetchEmployeeById);
  *         description: Employee updated successfully
  */
 
-// router.put("/:id", updateEmployee);
-router.put("/:id", allowRoles("admin"), updateEmployee);
+router.put("/:id", authorize("employee:update"), updateEmployee);
+// router.put("/:id", allowRoles("admin"), updateEmployee);
 
 // ---------------------------  delete Employee ------------------------------
 /**
@@ -151,7 +152,7 @@ router.put("/:id", allowRoles("admin"), updateEmployee);
  *         description: Employee deleted successfully
  */
 
-// router.delete("/:id", removeEmployee);
-router.delete("/:id", allowRoles("admin") , removeEmployee);
+router.delete("/:id", authorize("employee:delete"), removeEmployee);
+// router.delete("/:id", allowRoles("admin") , removeEmployee);
 
 export default router;
