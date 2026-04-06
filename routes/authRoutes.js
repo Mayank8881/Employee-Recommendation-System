@@ -74,10 +74,10 @@ router.post("/register", register);
  *             properties:
  *               email:
  *                 type: string
- *                 example: mayank@company.com
+ *                 example: admin@test.com
  *               password:
- *                 type: integer
- *                 example: 123456789
+ *                 type: string
+ *                 example: "123456"
  *     responses:
  *       200:
  *         description: Login successful

@@ -8,14 +8,34 @@ const options = {
             version: "1.0.0",
             description: "API documentation for Employee Recommendation Engine"
         },
+
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                },
+            },
+        },
+
+        // 🔥 THIS LINE ADDS AUTHORIZE BUTTON GLOBALLY
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
+
         servers: [
             {
-                // url: "http://localhost:5000"
-                url: process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`,
-            }
-        ]
+                url:
+                    process.env.RENDER_EXTERNAL_URL ||
+                    `http://localhost:${process.env.PORT || 5000}`,
+            },
+        ],
     },
-    apis: ["./routes/*.js"] // location of route files
+
+    apis: ["./routes/*.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
