@@ -22,9 +22,9 @@ export const createEmployeeSkill = async (req, res) => {
 // Get skills of employee
 export const fetchEmployeeSkills = async (req, res) => {
     try {
-        const { employeeId } = req.params;
+        const { id } = req.params;
 
-        const skills = await getEmployeeSkills(employeeId);
+        const skills = await getEmployeeSkills(id);
 
         res.json({
             message: "Employee skills fetched",

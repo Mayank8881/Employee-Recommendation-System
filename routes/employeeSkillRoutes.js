@@ -2,6 +2,8 @@ import express from "express";
 
 import { createEmployeeSkill, fetchEmployeeSkills, removeEmployeeSkill, updateEmployeeSkill } from "../controllers/employee/employeeSkillController.js";
 import { allowRoles } from "../middleware/roleMiddleware.js";
+import { authorize } from "../middleware/permissionMiddleware.js";
+import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
 
 const router = express.Router();
 
@@ -41,8 +43,6 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-
-// router.post("/", createEmployeeSkill);
 router.post("/", allowRoles("admin"), createEmployeeSkill);
 
 // Read
@@ -68,7 +68,7 @@ router.post("/", allowRoles("admin"), createEmployeeSkill);
  */
 
 // router.get("/:employeeId", fetchEmployeeSkills);
-router.get("/:employeeId", allowRoles("user","admin"), fetchEmployeeSkills);
+router.get("/:id",fetchEmployeeSkills);
 
 // Update
 /**

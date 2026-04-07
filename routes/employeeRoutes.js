@@ -2,7 +2,7 @@ import { createEmployee, fetchEmployeeById, fetchEmployees, removeEmployee, upda
 import express from "express";
 import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
-// import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
+import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
 
 const router = express.Router();
 
@@ -97,7 +97,7 @@ router.get("/", authorize("employee:read"), fetchEmployees);
  */
 
 // router.get("/:id", fetchEmployeeById);
-router.get("/", authorize("employee:read"), fetchEmployeeById);
+router.get("/:id", authorize("employee:read"), fetchEmployeeById);
 // router.get("/:id", allowRoles("admin"), fetchEmployeeById);
 
 //---------------------------- update Employee ------------------------------------
@@ -133,7 +133,7 @@ router.get("/", authorize("employee:read"), fetchEmployeeById);
  *         description: Employee updated successfully
  */
 
-router.put("/:id",authorize("employee:update"), updateEmployee);
+router.put("/:id",authorize("employee:update"), allowSelfOrAdmin(), updateEmployee);
 // router.put("/:id", allowRoles("admin"), updateEmployee);
 
 // ---------------------------  delete Employee ------------------------------
