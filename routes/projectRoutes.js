@@ -1,6 +1,7 @@
 import e from "express";
 import { createProject, fetchProjects, removeProject, updateProject } from "../controllers/projects/projectController.js";
 import { allowRoles } from "../middleware/roleMiddleware.js";
+import { authorize } from "../middleware/permissionMiddleware.js";
 const router = e.Router()
 
 //--------------------------------------------Create Project-------------------------------------------
@@ -39,8 +40,8 @@ const router = e.Router()
  *         description: Project created successfully
  */
 
-// router.post("/", createProject)
-router.post("/", allowRoles("admin"), createProject)
+router.post("/", authorize("project:create"), createProject)
+// router.post("/", allowRoles("admin"), createProject)
 
 // ------------------------------------------Get All Projects---------------------------------------------
 /**
@@ -54,8 +55,8 @@ router.post("/", allowRoles("admin"), createProject)
  *         description: List of projects
  */
 
-// router.get("/", fetchProjects)
-router.get("/", allowRoles("admin", "user"), fetchProjects)
+router.get("/", authorize("project:read"), fetchProjects)
+// router.get("/", allowRoles("admin", "user"), fetchProjects)
 
 // -------------------------------------------Update Project----------------------------------------------
 /**
@@ -86,8 +87,8 @@ router.get("/", allowRoles("admin", "user"), fetchProjects)
  *         description: Project updated successfully
  */
 
-// router.put("/:id", updateProject)
-router.put("/:id",allowRoles("admin") ,updateProject)
+// router.put("/:id",allowRoles("admin") ,updateProject)
+router.put("/:id",authorize("project:update") ,updateProject)
 
 //--------------------------------------------delete Project----------------------------------------------
 /**
@@ -107,7 +108,7 @@ router.put("/:id",allowRoles("admin") ,updateProject)
  *         description: Project deleted successfully
  */
 
-// router.delete("/:id", removeProject)
-router.delete("/:id", allowRoles("admin"),removeProject)
+// router.delete("/:id", allowRoles("admin"),removeProject)
+router.delete("/:id", authorize("project:delete"),removeProject);
 
 export default router

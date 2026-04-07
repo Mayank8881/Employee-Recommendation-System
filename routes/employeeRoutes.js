@@ -2,58 +2,60 @@ import { createEmployee, fetchEmployeeById, fetchEmployees, removeEmployee, upda
 import express from "express";
 import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
+// import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
 
 const router = express.Router();
 
 // ------------------- Create Employee---------------------------
 
-/**
- * @swagger
- * /api/employees:
- *   post:
- *     summary: Create a new employee
- *     tags: [EMPLOYEE]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - first_name
- *               - last_name
- *               - email
- *             properties:
- *               first_name:
- *                 type: string
- *                 example: Mayank
- *               last_name:
- *                 type: string
- *                 example: Mokhere
- *               email:
- *                 type: string
- *                 example: mayank@company.com
- *               experience_years:
- *                 type: integer
- *                 example: 5
- *               seniority_level:
- *                 type: string
- *                 example: Senior
- *               availability_status:
- *                 type: boolean
- *                 example: true
- *               department:
- *                 type: string
- *                 example: Engineering
- *     responses:
- *       201:
- *         description: Employee created successfully
- *       500:
- *         description: Server error
- */
-
-router.post("/", authorize("employee:create"), createEmployee);
+// /**
+//  * @swagger
+//  * /api/employees:
+//  *   post:
+//  *     summary: Create a new employee
+//  *     tags: [EMPLOYEE]
+//  *     requestBody:
+//  *       required: true
+//  *       content:
+//  *         application/json:
+//  *           schema:
+//  *             type: object
+//  *             required:
+//  *               - first_name
+//  *               - last_name
+//  *               - email
+//  *             properties:
+//  *               first_name:
+//  *                 type: string
+//  *                 example: Mayank
+//  *               last_name:
+//  *                 type: string
+//  *                 example: Mokhere
+//  *               email:
+//  *                 type: string
+//  *                 example: mayank@company.com
+//  *               experience_years:
+//  *                 type: integer
+//  *                 example: 5
+//  *               seniority_level:
+//  *                 type: string
+//  *                 example: Senior
+//  *               availability_status:
+//  *                 type: boolean
+//  *                 example: true
+//  *               department:
+//  *                 type: string
+//  *                 example: Engineering
+//  *     responses:
+//  *       201:
+//  *         description: Employee created successfully
+//  *       500:
+//  *         description: Server error
+//  */
+// router.post("/", authorize("employee:create"), createEmployee);
 // router.post("/", allowRoles("admin"),createEmployee);
+
+
 
 //----------------------------- get employee -------------------------------------
 /**
@@ -95,7 +97,8 @@ router.get("/", authorize("employee:read"), fetchEmployees);
  */
 
 // router.get("/:id", fetchEmployeeById);
-router.get("/:id", allowRoles("admin"), fetchEmployeeById);
+router.get("/", authorize("employee:read"), fetchEmployeeById);
+// router.get("/:id", allowRoles("admin"), fetchEmployeeById);
 
 //---------------------------- update Employee ------------------------------------
 /**
@@ -130,7 +133,7 @@ router.get("/:id", allowRoles("admin"), fetchEmployeeById);
  *         description: Employee updated successfully
  */
 
-router.put("/:id", authorize("employee:update"), updateEmployee);
+router.put("/:id",authorize("employee:update"), updateEmployee);
 // router.put("/:id", allowRoles("admin"), updateEmployee);
 
 // ---------------------------  delete Employee ------------------------------
