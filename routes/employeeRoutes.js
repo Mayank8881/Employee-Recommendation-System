@@ -3,6 +3,7 @@ import express from "express";
 import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
 import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
+import { getEmployeeIdFromEmployee } from "../middleware/ownershipDBLogic.js";
 
 const router = express.Router();
 
@@ -133,7 +134,7 @@ router.get("/:id", authorize("employee:read"), fetchEmployeeById);
  *         description: Employee updated successfully
  */
 
-router.put("/:id",authorize("employee:update"), allowSelfOrAdmin(), updateEmployee);
+router.put("/:id",authorize("employee:update"), allowSelfOrAdmin(getEmployeeIdFromEmployee), updateEmployee);
 // router.put("/:id", allowRoles("admin"), updateEmployee);
 
 // ---------------------------  delete Employee ------------------------------

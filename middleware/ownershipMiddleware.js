@@ -1,26 +1,27 @@
-export const allowSelfOrAdmin = ({
-    getTargetId = (req) => req.params.id,
+export const allowSelfOrAdmin = (
+    getTargetId,
     adminRoleId = 1
-} = {}) => {
-    return (req, res, next) => {
+) => {
+    return async (req, res, next) => {
         try {
             const userId = req.user.id;
             const roleId = req.user.role_id;
-            const targetId = getTargetId(req);
-            const skillempId=req.body.employee_id
-
-            console.log(skillempId);
 
             // ✅ allow if admin
             if (roleId === adminRoleId) {
                 return next();
             }
 
-            if(userId === skillempId){
-                return next();
+            // ✅ Resolve ownership from DB or params
+            const targetId = await getTargetId(req);
+
+            if (!targetId) {
+                return res.status(404).json({
+                    message: "Resource not found"
+                });
             }
-            // ✅ allow if same user (owner)
-            if (userId == targetId) {
+            // ✅ Ownership check
+            if (Number(userId) === Number(targetId)) {
                 return next();
             }
 

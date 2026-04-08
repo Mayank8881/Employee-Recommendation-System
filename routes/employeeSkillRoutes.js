@@ -4,6 +4,7 @@ import { createEmployeeSkill, fetchEmployeeSkills, removeEmployeeSkill, updateEm
 import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
 import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
+import { getEmployeeIdFromSkill } from "../middleware/ownershipDBLogic.js";
 
 const router = express.Router();
 
@@ -43,7 +44,7 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.post("/", allowRoles("admin"), createEmployeeSkill);
+router.post("/", authorize("employeeSkill:create"), allowSelfOrAdmin(), createEmployeeSkill);
 
 // Read
 /**
@@ -68,7 +69,7 @@ router.post("/", allowRoles("admin"), createEmployeeSkill);
  */
 
 // router.get("/:employeeId", fetchEmployeeSkills);
-router.get("/:id",fetchEmployeeSkills);
+router.get("/:id", authorize("employeeSkill:read"), fetchEmployeeSkills);
 
 // Update
 /**
@@ -103,8 +104,8 @@ router.get("/:id",fetchEmployeeSkills);
  *         description: Employee skill updated
  */
 
-// router.put("/:id", updateEmployeeSkill);
-router.put("/:id", allowRoles("admin"), updateEmployeeSkill);
+router.put("/:id", authorize("employeeSkill:update"), allowSelfOrAdmin(getEmployeeIdFromSkill), updateEmployeeSkill);
+// router.put("/:id", allowRoles("admin"), updateEmployeeSkill);
 
 // Delete
 /**
@@ -126,7 +127,7 @@ router.put("/:id", allowRoles("admin"), updateEmployeeSkill);
  *         description: Skill removed from employee
  */
 
-// router.delete("/:id", removeEmployeeSkill);
-router.delete("/:id", allowRoles("admin"), removeEmployeeSkill);
+router.delete("/:id", authorize("employeeSkill:delete"), allowSelfOrAdmin(getEmployeeIdFromSkill), removeEmployeeSkill);
+// router.delete("/:id", allowRoles("admin"), removeEmployeeSkill);
 
 export default router;
