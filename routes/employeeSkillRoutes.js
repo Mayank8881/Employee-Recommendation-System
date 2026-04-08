@@ -1,10 +1,9 @@
 import express from "express";
 
 import { createEmployeeSkill, fetchEmployeeSkills, removeEmployeeSkill, updateEmployeeSkill } from "../controllers/employee/employeeSkillController.js";
-import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
 import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
-import { getEmployeeIdFromSkill } from "../middleware/ownershipDBLogic.js";
+import { getEmployeeIdFromSkill } from "../models/ownership/logicModel.js";
 
 const router = express.Router();
 

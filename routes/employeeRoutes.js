@@ -1,62 +1,10 @@
 import { createEmployee, fetchEmployeeById, fetchEmployees, removeEmployee, updateEmployee } from "../controllers/employee/employeeController.js";
 import express from "express";
-import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
 import { allowSelfOrAdmin } from "../middleware/ownershipMiddleware.js";
-import { getEmployeeIdFromEmployee } from "../middleware/ownershipDBLogic.js";
+import { getEmployeeIdFromEmployee } from "../models/ownership/logicModel.js"
 
 const router = express.Router();
-
-// ------------------- Create Employee---------------------------
-
-// /**
-//  * @swagger
-//  * /api/employees:
-//  *   post:
-//  *     summary: Create a new employee
-//  *     tags: [EMPLOYEE]
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         application/json:
-//  *           schema:
-//  *             type: object
-//  *             required:
-//  *               - first_name
-//  *               - last_name
-//  *               - email
-//  *             properties:
-//  *               first_name:
-//  *                 type: string
-//  *                 example: Mayank
-//  *               last_name:
-//  *                 type: string
-//  *                 example: Mokhere
-//  *               email:
-//  *                 type: string
-//  *                 example: mayank@company.com
-//  *               experience_years:
-//  *                 type: integer
-//  *                 example: 5
-//  *               seniority_level:
-//  *                 type: string
-//  *                 example: Senior
-//  *               availability_status:
-//  *                 type: boolean
-//  *                 example: true
-//  *               department:
-//  *                 type: string
-//  *                 example: Engineering
-//  *     responses:
-//  *       201:
-//  *         description: Employee created successfully
-//  *       500:
-//  *         description: Server error
-//  */
-// router.post("/", authorize("employee:create"), createEmployee);
-// router.post("/", allowRoles("admin"),createEmployee);
-
-
 
 //----------------------------- get employee -------------------------------------
 /**

@@ -1,6 +1,5 @@
 import e from "express";
 import { createProject, fetchProjects, removeProject, updateProject } from "../controllers/projects/projectController.js";
-import { allowRoles } from "../middleware/roleMiddleware.js";
 import { authorize } from "../middleware/permissionMiddleware.js";
 const router = e.Router()
 

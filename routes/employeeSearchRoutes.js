@@ -1,6 +1,5 @@
 import express from "express";
 import { searchEmployee } from "../controllers/search/employeeSearchController.js";
-import { allowRoles } from "../middleware/roleMiddleware.js";
 const router = express.Router();
 
 /**
@@ -54,6 +53,6 @@ const router = express.Router();
  */
 
 // router.get("/", searchEmployee);
-router.get("/", allowRoles("user","admin"), searchEmployee);
+router.get("/", searchEmployee);
 
 export default router;

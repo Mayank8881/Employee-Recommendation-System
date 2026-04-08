@@ -1,4 +1,4 @@
-import supabase from "../config/supabase.js";
+import supabase from "../../config/supabase.js";
 
 // 🔹 For employeeSkill → get employee_id using skill ID
 export const getEmployeeIdFromSkill = async (req) => {

@@ -7,6 +7,7 @@ import employeeSkillRoutes from "./routes/employeeSkillRoutes.js"
 import projectSkillRoutes from "./routes/projectSkillRoutes.js"
 import employeeSearchRoutes from "./routes/employeeSearchRoutes.js"
 import recommendationRoutes from "./routes/recommendationRoutes.js";
+import rolePermissionRoutes from "./routes/rolePermissionRoutes.js";
 import supabase from "./config/supabase.js";
 import swaggerSpec from "./config/swagger.js";
 import cors from "cors";
@@ -35,6 +36,7 @@ app.use("/api/employee-skill", employeeSkillRoutes)
 app.use("/api/project-skill", projectSkillRoutes)
 app.use("/api/employee/search", employeeSearchRoutes)
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/rolePermissions",rolePermissionRoutes)
 
 
 //swagger

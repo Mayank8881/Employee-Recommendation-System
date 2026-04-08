@@ -1,62 +1,53 @@
-import redisClient from "../config/redis.js";
 import supabase from "../config/supabase.js";
+import { getCache, setCache } from "../utils/cacheClient.js";
 
 export const authorize = (requiredPermission) => {
-    return async (req, res, next) => {
-        try {
-            const roleId = req.user.role_id;
+  return async (req, res, next) => {
+    try {
+      const roleId = req.user.role_id;
+      const cacheKey = `role:${roleId}:permissions`;
 
-            const cacheKey = `role:${roleId}:permissions`;
+      let permissions;
 
-            let permissions;
+      // ✅ Use cache utils
+      const cachedPermissions = await getCache(cacheKey);
 
-            //Check Redis Cache
-            const cachedPermissions = await redisClient.get(cacheKey);
+      if (cachedPermissions) {
+        console.log(`✅ RBAC CACHE HIT`);
+        permissions = cachedPermissions;
+      } else {
+        console.log(`❌ RBAC CACHE MISS`);
 
-            if (cachedPermissions) {
-                console.log("✅ CACHE HIT");
-                permissions = JSON.parse(cachedPermissions);
+        const { data, error } = await supabase
+          .from("role_permissions")
+          .select(`permissions(name, resource, action)`)
+          .eq("role_id", roleId);
+
+        if (error) throw error;
+
+        permissions = data
+          .filter(p => p.permissions)
+          .map(p => {
+            if (p.permissions.resource && p.permissions.action) {
+              return `${p.permissions.resource}:${p.permissions.action}`;
             }
-            else {
-                // Fallback to DB
-                console.log("❌ CACHE MISS → Fetching from DB");
-                const { data, error } = await supabase
-                    .from("role_permissions")
-                    .select(`permissions(name)`)
-                    .eq("role_id", roleId);
+            return p.permissions.name;
+          });
 
-                if (error) throw error;
+        // ✅ Use cache utils
+        await setCache(cacheKey, permissions);
+      }
 
-                // permissions = data.map(p => p.permissions.name);
-                permissions = data
-                    .filter(p => p.permissions)
-                    .map(p => {
-                        // prefer structured if available
-                        if (p.permissions.resource && p.permissions.action) {
-                            return `${p.permissions.resource}:${p.permissions.action}`;
-                        }
-                        return p.permissions.name; // fallback (old)
-                    });
+      if (!permissions.includes(requiredPermission)) {
+        return res.status(403).json({
+          message: "Forbidden: Permission denied"
+        });
+      }
 
+      next();
 
-                //Store in Redis (cache for 10 mins)
-                await redisClient.setEx(
-                    cacheKey,
-                    600, // seconds
-                    JSON.stringify(permissions)
-                );
-            }
-            // check permission
-            if (!permissions.includes(requiredPermission)) {
-                return res.status(403).json({
-                    message: "Forbidden: Permission denied"
-                });
-            }
-
-            next();
-
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    };
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 };

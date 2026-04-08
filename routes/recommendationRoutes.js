@@ -1,6 +1,5 @@
 import express from "express";
 import { recommendEmployees } from "../controllers/recommendation/recommendationController.js";
-import { allowRoles } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
@@ -51,7 +50,7 @@ const router = express.Router();
  *       500:
  *         description: Recommendation engine error
  */
-router.get("/:projectId",allowRoles("user","admin"), recommendEmployees);
+router.get("/:projectId", recommendEmployees);
 // router.get("/:projectId", recommendEmployees);
 
 export default router;
