@@ -1,5 +1,6 @@
 import express from "express";
 import { searchEmployee } from "../controllers/search/employeeSearchController.js";
+import { authorize } from "../middleware/permissionMiddleware.js";
 const router = express.Router();
 
 /**
@@ -53,6 +54,6 @@ const router = express.Router();
  */
 
 // router.get("/", searchEmployee);
-router.get("/", searchEmployee);
+router.get("/",authorize("employeeSearch:read"), searchEmployee);
 
 export default router;

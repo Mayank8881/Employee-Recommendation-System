@@ -1,10 +1,21 @@
 import { deleteEmployeeSkill, getEmployeeSkills, postEmployeeSkill, putEmployeeSkill } from "../../models/employee/employeeSkillModel.js";
+import { clearEmployeeSkillCache } from "../../utils/ownershipCache.js";
 
 
 // Add skill
 export const createEmployeeSkill = async (req, res) => {
     try {
-        const skill = await postEmployeeSkill(req.body);
+        const employeeId = Number(req.params.employeeId);
+
+        // ✅ Prevent override from body
+        const { employee_id, ...rest } = req.body;
+
+        const skillData = {
+            employee_id: employeeId,
+            ...rest
+        };
+
+        const skill = await postEmployeeSkill(skillData);
 
         res.status(201).json({
             message: "Skill added to employee",
@@ -46,6 +57,8 @@ export const updateEmployeeSkill = async (req, res) => {
 
         const skill = await putEmployeeSkill(id, req.body);
 
+        await clearEmployeeSkillCache(id);
+
         res.json({
             message: "Employee skill updated",
             data: skill
@@ -65,6 +78,8 @@ export const removeEmployeeSkill = async (req, res) => {
         const { id } = req.params;
 
         const result = await deleteEmployeeSkill(id);
+
+        await clearEmployeeSkillCache(id);
 
         res.json(result);
 

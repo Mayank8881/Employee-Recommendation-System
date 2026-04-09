@@ -5,7 +5,8 @@ export const postEmployeeSkill = async (skillData) => {
     const { data, error } = await supabase
         .from("employee_skills")
         .insert([skillData])
-        .select();
+        .select()
+        .single();
 
     if (error) {
         throw new Error(error.message);

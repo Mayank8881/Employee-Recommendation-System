@@ -1,8 +1,8 @@
 import supabase from "../../config/supabase.js";
 
 // 🔹 For employeeSkill → get employee_id using skill ID
-export const getEmployeeIdFromSkill = async (req) => {
-    const skillId = req.params.id;
+export const getEmployeeIdFromSkill = async (skillId) => {
+    // const skillId = req.params.id;
 
     const { data, error } = await supabase
         .from("employee_skills")
@@ -19,8 +19,9 @@ export const getEmployeeIdFromSkill = async (req) => {
 
 
 // 🔹 For employee (direct)
-export const getEmployeeIdFromEmployee = async (req) => {
-    return req.params.id;
+export const getEmployeeIdFromEmployee = async (employeeId) => {
+    // return req.params.id;
+    return employeeId;
 };
 
 
