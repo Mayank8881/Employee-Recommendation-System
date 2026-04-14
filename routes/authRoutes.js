@@ -28,16 +28,16 @@ const router = express.Router();
  *             properties:
  *               first_name:
  *                 type: string
- *                 example: Mayank
+ *                 example: test
  *               last_name:
  *                 type: string
- *                 example: Mokhere
+ *                 example: user
  *               email:
  *                 type: string
- *                 example: mayank@company.com
+ *                 example: tester@test.com
  *               password:
- *                 type: integer
- *                 example: 123456789
+ *                 type: string
+ *                 example: 1234
  *               role:
  *                 type: string
  *                 enum: [user, admin]
@@ -55,7 +55,36 @@ router.post("/register", register);
 
 
 // ------------------- Login User/Admin---------------------------
-
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: User/Admin Login
+ *     tags: [AUTH]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: admin@test.com
+ *               password:
+ *                 type: string
+ *                 example: "123456"
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Server error
+ */
 router.post("/login", login);
 
 // ADMIN ONLY route
