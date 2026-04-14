@@ -19,7 +19,6 @@ const options = {
             },
         },
 
-        // 🔥 THIS LINE ADDS AUTHORIZE BUTTON GLOBALLY
         security: [
             {
                 bearerAuth: [],
