@@ -13,6 +13,7 @@ import swaggerSpec from "./config/swagger.js";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import { verifyToken } from "./middleware/authMiddleware.js";
+import { globalLimiter } from "./middleware/ratelimiting/globalLimiter.js";
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.use(cors());
 // Middleware
 app.use(express.json());
 
+//global rate limiter
+app.use(globalLimiter);
 
 //auth-access 
 app.use("/api/auth", authRoutes);

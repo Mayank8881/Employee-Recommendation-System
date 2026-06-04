@@ -1,6 +1,7 @@
 import express from "express";
 import { register, login, adminSetPassword } from "../controllers/auth/authController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
+import { authRateLimiter } from "../middleware/ratelimiting/authRateLimiter.js";
 
 const router = express.Router();
 
@@ -50,7 +51,7 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.post("/register", register);
+router.post("/register",authRateLimiter, register);
 
 
 
@@ -85,7 +86,7 @@ router.post("/register", register);
  *       500:
  *         description: Server error
  */
-router.post("/login", login);
+router.post("/login",authRateLimiter, login);
 
 // ADMIN ONLY route
 router.patch("/admin/set-password/:userId",
